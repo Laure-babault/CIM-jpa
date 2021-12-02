@@ -1,5 +1,7 @@
 package fr.lo.cim.entity;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,17 +10,19 @@ public class Chapitre {
 	@Id
 	@GeneratedValue
 	private int id;
-	@Column
+	@Column(name = "code", length= 40, nullable = true)
 	private String code;
-	@Column
+	@Column(name = "LIBELLE", length= 150, nullable = true)
 	private String libelle;
-	@Column
+	@Column(name = "code_chapitre", length= 40, nullable = true)
 	private String codeChapitre;
 
-	@ManyToOne
-	private Maladie chapitreId;
+	@OneToMany(mappedBy = "chapitre")
+	private List <Maladie> maladies;
 
 	// Constructeurs
+	public Chapitre() {}
+	
 	public Chapitre(int id, String code, String libelle, String codeChapitre) {
 		super();
 		this.id = id;
@@ -62,5 +66,13 @@ public class Chapitre {
 	@Override
 	public String toString() {
 		return "{" + id + ", " + code + ", " + libelle + "}";
+	}
+
+	public List<Maladie> getMaladies() {
+		return maladies;
+	}
+
+	public void setMaladies(List<Maladie> maladies) {
+		this.maladies = maladies;
 	}
 }

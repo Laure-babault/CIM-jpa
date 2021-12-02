@@ -4,47 +4,57 @@ import java.util.*;
 
 import javax.persistence.*;
 
+
 @Entity
 public class Maladie {
 
 	@Id
 	@GeneratedValue
 	private int id;
-	@Column
+	@Column(name = "code", length= 40, nullable = true)
 	private String code;
-	@Column
+	@Column(name = "libelle_cort", length=1000, nullable = true)
 	private String libelleCourt;
-	@Column
+	@Column(name = "libelle", length=1000, nullable = true)
 	private String libelle;
-	@Column
-	private Integer idParent;
-	@Column
-	private Integer idChapitre;
-	@Column
-	private String parent;
 
-	@OneToMany(mappedBy = "chapitreID")
-	private List<Chapitre> chapitreID = new LinkedList<Chapitre>();
 
 	@ManyToOne
-	private Maladie maladieParent;
+	@JoinColumn(name = "id_chapitre", nullable = true)
+	private Chapitre chapitre;
 
-	@OneToMany(mappedBy = "maladieParent")
-	private Set<Maladie> maladieEnfant = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name = "id_parent", nullable = true)
+	private Maladie parent;
+
+	@OneToMany(mappedBy = "parent")
+	private List<Maladie> enfants;
 
 	// Constructeur
-	public Maladie(int id, String code, String libelleCourt, String libelle, Integer idParent, Integer idChapitre,
-			String parent) {
+	/*public Maladie(int id, String code, String libelleCourt, String libelle) {
 		super();
 		this.id = id;
 		this.code = code;
 		this.libelleCourt = libelleCourt;
 		this.libelle = libelle;
-		this.idParent = idParent;
-		this.idChapitre = idChapitre;
-		this.parent = parent;
+		
 
+	}*/
+	public Maladie() {}
+	
+
+	public Maladie(int id, String code, String libelleCourt, String libelle, Chapitre chapitre, Maladie parent,
+			List<Maladie> enfants) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.libelleCourt = libelleCourt;
+		this.libelle = libelle;
+		this.chapitre = chapitre;
+		this.parent = parent;
+		this.enfants = enfants;
 	}
+
 
 	public int getId() {
 		return id;
@@ -62,13 +72,7 @@ public class Maladie {
 		return libelle;
 	}
 
-	public int getIdParent() {
-		return idParent;
-	}
-
-	public int getIdChapitre() {
-		return idChapitre;
-	}
+	
 
 	public void setId(int id) {
 		this.id = id;
@@ -86,28 +90,41 @@ public class Maladie {
 		this.libelle = libelle;
 	}
 
-	public void setIdParent(int idParent) {
-		this.idParent = idParent;
+	
+
+	public Chapitre getChapitre() {
+		return chapitre;
 	}
 
-	public void setIdChapitre(int idChapitre) {
-		this.idChapitre = idChapitre;
+	public void setChapitre(Chapitre chapitre) {
+		this.chapitre = chapitre;
 	}
 
-	public String getParent() {
+
+
+	public List<Maladie> getEnfants() {
+		return enfants;
+	}
+
+	public void setEnfants(List<Maladie> enfants) {
+		this.enfants = enfants;
+	}
+
+
+	public Maladie getParent() {
 		return parent;
 	}
 
-	public void setIdParent(Integer idParent) {
-		this.idParent = idParent;
-	}
 
-	public void setIdChapitre(Integer idChapitre) {
-		this.idChapitre = idChapitre;
-	}
-
-	public void setParent(String parent) {
+	public void setParent(Maladie parent) {
 		this.parent = parent;
 	}
+
+
+
+
+
+
+
 
 }
